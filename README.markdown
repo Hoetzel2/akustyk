@@ -35,7 +35,9 @@ On Linux download the archive, open the terminal and enter the following:
 *  save the file and close gedit
 *  start Praat, you should now see Akustyk menus added to the Praat UI
 
-Next, you need to open the file `praat-user-startUp` in a text editor
+Next, you need to open the file `praat-user-startUp` in a text editor. You will need to make sure that the variable `platoform` has the value "linux" as follows:
+'platform$ = "linux"`
+Save the file and restart Praat. You should now see Akustyk menues added to the Praat interface.
 
      
 
