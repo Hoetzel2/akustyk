@@ -14,10 +14,10 @@ button Simple
 button Advanced
 comment Simple options:
 optionmenu Destination 1
-option Webpage
+option WebPage
 option PowerPoint
-option Word_draft
-option Word_print
+option WordDraft
+option WordPrint
 comment Advanced options:
 real Resolution_dpi 150
 optionmenu Transparency 1
@@ -53,12 +53,6 @@ else
    resizeScale$ = ""
 endif
 
-# if border_px$ <> "0x0"
-#    border$ = "-bordercolor SkyBlue -border 'border_px$'"
-# else
-#    border$ = ""
-# endif
-
 if transparency$ = "Flatten"
    flatten$ = "-flatten"
 else
@@ -69,11 +63,11 @@ endif
 if mode$ = "Simple"
    if destination$ = "PowerPoint"
       resolution = 150
-   elsif destination$ = "Word_draft"
+   elsif destination$ = "WordDraft"
       resolution = 300
-   elsif destination$ = "Word_print"
+   elsif destination$ = "WordPrint"
       resolution = 600
-   elsif destination$ = "Webpage"
+   elsif destination$ = "WebPage"
       resolution = 100
    endif
    call saveEps
@@ -101,7 +95,6 @@ else
    syscmd$ = "system"
 endif
 endproc
-
 
 procedure saveEps
 if output_directory$ = "Desktop"
