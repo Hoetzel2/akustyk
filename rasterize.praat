@@ -1,5 +1,5 @@
 # # Rasterize for Akustyk
-# # Bartlomiej Plichta Thu Feb  2 15:34:36 CST 2012
+# # Bartlomiej Plichta 02/03/12
 # The script requires ImageMagick to be installed. ImageMagick is a free command-line utility that powers a lot of image conversion software. It is available for Linux, Mac, and Windows.
 # I recommend you use the "Simple" option for most purposes. For advanced applications, you can use the "Advanced" options. The command "Resize fit" resizes to fit the box to the number of pixels specified. It simply resizes the shorter edge to the specified number of pixels. The function "Resize fill" fills the box, thus resizing the longer edge to the specified number of pixels. For best results, enter the same number of pixels in the "Resolution" and "Resize fit/fill" boxes. The resulting file is in PNG format, chosen for best quality and broadest applications.
 
