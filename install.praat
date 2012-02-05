@@ -24,8 +24,8 @@ elsif windows = 1
    winPath$ = environment$("USERPROFILE")
    winDesktop$ = "'winPath$'\Desktop"
    akustykDownloaded$ = "'winDesktop$'\plugin_akustyk"
-   copyDir$ = "nowarn xcopy 'akustykDownloaded$' 'prefs$'\plugin_akustyk /s /e /i /h"
-   rmDir$ = "nowarn del 'prefs$'\plugin_akustyk"
+   copyDir$ = "xcopy 'akustykDownloaded$' 'prefs$'\plugin_akustyk\ /S /Y /Q"
+   rmDir$ = "RD /S /Q 'prefs$'\plugin_akustyk"
 elsif macintosh = 1
    system$ = "mac"
    copyDir$ = "cp -r 'akustykDownloaded$' 'prefs$'"
@@ -49,10 +49,10 @@ if setup$ = "Install"
     else
        pause Could not find plugin_akustyk on your Desktop
     endif
-else
+elsif setup$ = "Uninstall"
        prefs$ = preferencesDirectory$
        pluginDirectory$ = "'prefs$'/plugin_akustyk"
-       pause Akustyk ('pluginDirectory$') will be removed
+       pause Akustyk ('prefs$'\plugin_akustyk) will be removed
        system_nocheck 'rmDir$'
        installedAkustyk$ = "'pluginDirectory$'/praat-user-startUp"
        if fileReadable(installedAkustyk$)
