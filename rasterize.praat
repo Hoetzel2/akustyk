@@ -82,7 +82,7 @@ elsif mode$ = "Advanced"
 endif
 
 procedure checkEnvironment
-# Check environment
+# Check environment. If there's a better way to query platform/OS, I'd like to know it so I could implement it here and in other scripts.
 homePath$ = environment$("HOMEPATH")
 homeDirectory$ = environment$("HOME")
 if homePath$ = ""
