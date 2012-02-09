@@ -59,30 +59,6 @@ left_Interval_10$ = "self"
 right_Interval_10$ = "self"
 
 
-procedure from_editor
-original_sound = selected("Sound")
-original_sound$ = selected$("Sound")
-duration = Get total duration
-Rename... before
-Resample... 10000 50
-master_sound = selected("Sound")
-template_sound = selected("Sound")
-Rename... template
-Edit
-editor Sound template
-pause Make a selection
-Move begin of selection to nearest zero crossing
-Move end of selection to nearest zero crossing
-sel_start=Get begin of selection
-sel_end=Get end of selection
-cursor = Get cursor
-# selection synthesis only
-if lPC_entire_file$ = "no"
-	call split_files
-endif
-endeditor
-endproc
-
 call from_editor
 select template_sound
 duration = Get total duration
@@ -97,6 +73,7 @@ master_formant = selected("Formant")
 Copy... original
 original_formant = selected("Formant")
 select master_formant
+
 
 #Get frame numbers from selection times
 frame_start = Get frame number from time... sel_start
@@ -174,6 +151,11 @@ f2_t9_before = Get value at time... 2 t9 Hertz Linear
 f2_t10_before = Get value at time... 2 t10 Hertz Linear
 f2_t11_before = Get value at time... 2 t11 Hertz Linear
 
+# Check LPC values option to bring up Formant Grid to check for "jumps"
+# Feature added by Anne van Leeuwen (Thanks!)
+if check_LPC_values = 1
+   call checkLPC
+endif
 call formula
 
 if f1_change$ <> "self"
@@ -206,6 +188,26 @@ endif
 if b5_change$ <> "self"
 	'f5b_formula$'
 endif
+
+
+select master_lpc
+select master_sound
+plus master_lpc
+Filter (inverse)
+Rename... source
+source_sound = selected("Sound")
+plus master_formant
+Filter
+Rename... Resynthesized
+resynthesized_sound = selected("Sound")
+resynthesized_sound_DB=Get intensity (dB)
+Scale intensity... master_sound_DB
+To LPC (burg)... filter_order window time_step 50
+Rename... Source_after
+lpc_after = selected("LPC")
+To Formant
+Rename... formant_after
+formant_after = selected("Formant")
 if intervals=1
 
 	#Interval 1
@@ -339,14 +341,6 @@ if intervals=1
 
 endif
 
-#for current_frame from 1 to 10
-#f1_t = Get value at time... 1 t'current_frame' Hertz Linear
-#f2_t = Get value at time... 2 t'current_frame' Hertz Linear
-#print 'f2_t''newline$'
-#endfor
-
-select master_formant
-
 f1_t1_after = Get value at time... 1 t1 Hertz Linear
 f1_t2_after = Get value at time... 1 t2 Hertz Linear
 f1_t3_after = Get value at time... 1 t3 Hertz Linear
@@ -367,28 +361,6 @@ f2_t7_after = Get value at time... 2 t7 Hertz Linear
 f2_t8_after = Get value at time... 2 t8 Hertz Linear
 f2_t9_after = Get value at time... 2 t9 Hertz Linear
 f2_t10_after = Get value at time... 2 t10 Hertz Linear
-
-call checkLPC
-
-select master_lpc
-select master_sound
-plus master_lpc
-Filter (inverse)
-Rename... source
-source_sound = selected("Sound")
-plus master_formant
-Filter
-Rename... Resynthesized
-resynthesized_sound = selected("Sound")
-resynthesized_sound_DB=Get intensity (dB)
-Scale intensity... master_sound_DB
-
-To LPC (burg)... filter_order window time_step 50
-Rename... Source_after
-lpc_after = selected("LPC")
-To Formant
-Rename... formant_after
-formant_after = selected("Formant")
 
 f1_after = Get value at time... 1 midpoint Hertz Linear
 f2_after = Get value at time... 2 midpoint Hertz Linear
@@ -543,7 +515,7 @@ f2_formula_8$= "Formula (frequencies)... if row = 2  and col = frame then 'right
 f2_formula_9$= "Formula (frequencies)... if row = 2  and col = frame then 'right_Interval_9$' else self fi"
 f2_formula_10$= "Formula (frequencies)... if row = 2  and col = frame then 'right_Interval_10$' else self fi"
 endproc
- 
+
 procedure split_files
 	if sel_start = 0
 		exit Your selection is too close to the edge of the file
@@ -604,10 +576,36 @@ endproc
 
 procedure checkLPC
 # Check LPC values
-select master_lpc
-To Formant
+select master_formant
 Down to FormantGrid
 test_formant_grid = selected("FormantGrid")
 View & Edit
 pause Check formant values
+select test_formant_grid
+master_formant = test_formant_grid
+select master_formant
+endproc
+
+procedure from_editor
+original_sound = selected("Sound")
+original_sound$ = selected$("Sound")
+duration = Get total duration
+Rename... before
+Resample... 10000 50
+master_sound = selected("Sound")
+template_sound = selected("Sound")
+Rename... template
+Edit
+editor Sound template
+pause Make a selection
+Move begin of selection to nearest zero crossing
+Move end of selection to nearest zero crossing
+sel_start=Get begin of selection
+sel_end=Get end of selection
+cursor = Get cursor
+# selection synthesis only
+if lPC_entire_file$ = "no"
+	call split_files
+endif
+endeditor
 endproc
