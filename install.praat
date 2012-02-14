@@ -12,6 +12,7 @@ home$ = homeDirectory$
 desktopDirectory$ = "'home$'/Desktop"
 prefs$ = preferencesDirectory$
 akustykDownloaded$ = "'desktopDirectory$'/plugin_akustyk"
+singleQuote$ = "'"
 pluginDirectory$ = "'prefs$'/plugin_akustyk"
 praatUserStartUp$ = "'akustykDownloaded$'/praat-user-startUp"
 installedAkustyk$ = "'pluginDirectory$'/praat-user-startUp"
@@ -28,7 +29,8 @@ elsif windows = 1
    rmDir$ = "RD /S /Q 'prefs$'\plugin_akustyk"
 elsif macintosh = 1
    system$ = "mac"
-   copyDir$ = "cp -r 'akustykDownloaded$' 'prefs$'"
+   pluginDirectory$ = "'singleQuote$''prefs$'/plugin_akustyk'singleQuote$'"
+   copyDir$ = "cp -r 'akustykDownloaded$' 'pluginDirectory$'"
    rmDir$ = "rm -r 'pluginDirectory$'"
 endif
 if setup$ = "Install"
@@ -52,7 +54,7 @@ if setup$ = "Install"
 elsif setup$ = "Uninstall"
        prefs$ = preferencesDirectory$
        pluginDirectory$ = "'prefs$'/plugin_akustyk"
-       pause Akustyk ('prefs$'\plugin_akustyk) will be removed
+       pause Akustyk ('prefs$'/plugin_akustyk) will be removed
        system_nocheck 'rmDir$'
        installedAkustyk$ = "'pluginDirectory$'/praat-user-startUp"
        if fileReadable(installedAkustyk$)
